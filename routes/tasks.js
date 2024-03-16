@@ -1,63 +1,65 @@
 const router = require('express').Router();
-const {encrypt, decrypt} = require('../utils/encrypt');
-const { requiresAuth } = require('express-openid-connect')
+const { encrypt, decrypt } = require('../utils/encrypt');
+const { requiresAuth } = require('express-openid-connect');
 
-// array to store tasks
-const tasks = require('./seedData.json')
+// Array to store tasks
+const tasks = require('./seedData.json');
 
-// generate a unique ID for each tasks
-let id = tasks.length
+// Generate a unique ID for each task
+let taskId = tasks.length;
 
-// create a new tasks
+// Create a new task
 router.post('/', requiresAuth(), (req, res) => {
-  const { name, instructions } = req.body
+  const { name, instructions } = req.body;
 
-  // basic validation
+  // Basic validation
   if (!name || !instructions) {
     return res
       .status(400)
-      .json({ error: 'name and instructions are required fields' })
+      .json({ error: 'name and instructions are required fields' });
   }
 
-  const tasks = {
-    id: ++id,
-    flavor,
-    instructions
-  }
+  const newTask = {
+    id: ++taskId,
+    name,
+    instructions: encrypt(instructions) // Encrypt instructions before saving
+  };
 
-  tasks.push({...tasks, instructions: encrypt(instructions)});
-  res.status(201).json(tasks)
-})
+  tasks.push(newTask);
+  res.status(201).json(newTask);
+});
 
-// get all Tasks
+// Get all tasks
 router.get('/', requiresAuth(), (req, res) => {
-  const { name } = req.query
+  const { name } = req.query;
 
-  const decryptedTasks = Tasks.map(tasks => ({
-    ...tasks,
-    instructions: decrypt(tasks.instructions)
-  }))
-  if (flavor) {
+  const decryptedTasks = tasks.map(task => ({
+    ...task,
+    instructions: decrypt(task.instructions) // Decrypt instructions before sending
+  }));
+
+  if (name) {
     const filteredTasks = decryptedTasks.filter(
-      tasks => tasks.name.toLowerCase() === name.toLowerCase()
-    )
-    return res.json(filteredTasks)
+      task => task.name.toLowerCase() === name.toLowerCase()
+    );
+    return res.json(filteredTasks);
   }
 
-  res.json(decryptedTasks)
-})
+  res.json(decryptedTasks);
+});
 
-// get a tasks by ID
+// Get a task by ID
 router.get('/:id', requiresAuth(), (req, res) => {
-  const tasksId = parseInt(req.params.id)
-  let tasks = Tasks.find(tasks => tasks.id === tasksId)
+  const taskId = parseInt(req.params.id);
+  let task = tasks.find(task => task.id === taskId);
 
-  if (!tasks) {
-    return res.status(404).json({ error: 'tasks not found' })
+  if (!task) {
+    return res.status(404).json({ error: 'Task not found' });
   }
 
-  tasks = {...tasks, instructions: decrypt(tasks.instructions)}
-  res.json(tasks)
-})
+  // Decrypt instructions before sending
+  task = { ...task, instructions: decrypt(task.instructions) };
+  res.json(task);
+});
 
 module.exports = router;
