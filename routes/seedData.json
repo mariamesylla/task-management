@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "name": "Clear cache",
+      "instructions": "Clear Laptop Google chrome cache"
+    },
+    {
+      "id": 2,
+      "name": "Meeting with manager",
+      "instructions": "1-1 with manager at noon!"
+    },
+    {
+      "id": 3,
+      "name": "Deploy branch in E2",
+      "instructions": "Deploy changes in E2 for QA"
+    },
+    {
+      "id": 4,
+      "name": "Go to mentor KT ",
+      "instructions": "Join mentor's KT session this afternoon"
+    },
+    {
+      "id": 5,
+      "name": "Reserve Room",
+      "instructions": "Reserve Room for presentation"
+    }
+  ]
