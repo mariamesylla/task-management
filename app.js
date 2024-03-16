@@ -1,81 +1,108 @@
-require('dotenv').config();
-const express = require('express');
-const routes = require('./routes');
-const { auth } = require('express-openid-connect');
+require('dotenv').config() // bring in environment variables
+const express = require('express')
+const app = express()
+const PORT = 4000
 
-const app = express();
-const PORT = 4000;
+app.use(express.json())
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: 'a long, randomly-generated string stored in env',
-  baseURL: 'http://localhost:4000',
-  clientID: 'r6k6Qugzo6DmFAuSjjmwtkiE9WlexKzr',
-  issuerBaseURL: 'https://dev-kqcvt5qlx045drmf.us.auth0.com'
-};
-
-app.use(express.json());
-
-app.use(auth(config));
-
-app.use('/user', routes.user);
-app.use('/tasks', routes.tasks);
 
 // array to store tasks
-const tasks = require('./seedData.json');
+const tasks = require('./routes/seedData.json')
+const routes = require('./routes')
 
-// generate a unique ID for each tasks
-let id = tasks.length;
+// generate a unique ID for each snippet
+let id = tasks.length + 1
 
-// create a new tasks
-app.post('/tasks', (req, res) => {
-  const { name, instructions } = req.body;
+// create a new snippet
+app.post('/routes/tasks', (req, res) => {
+  const { nameTask, instruction } = req.body
 
   // basic validation
-  if (!name || !instructions) {
+  if (!nameTask || !instruction) {
     return res
       .status(400)
-      .json({ error: 'name and instructions are required fields' });
+      .json({ error: 'name and instruction are required fields' })
   }
 
-  const tasks = {
-    id: ++id,
-    name,
-    instructions
-  };
+  const task = {
+    id: id++,
+    nameTask,
+    instruction
+  }
 
-  tasks.push(tasks);
-  res.status(201).json(tasks);
-});
+  tasks.push(task)
+  res.status(201).json(task)
+})
 
 // get all tasks
-app.get('/tasks', (req, res) => {
-  const { name } = req.query;
+app.get('/routes/tasks', (req, res) => {
+  const { tasks } = req.query
 
-  if (name) {
+  if (tasks) {
     const filteredtasks = tasks.filter(
-      tasks => tasks.name.toLowerCase() === name.toLowerCase()
-    );
-    return res.json(filteredtasks);
+      tasks => tasks.nameTask.toLowerCase() === tasks.toLowerCase()
+    )
+    return res.json(filteredtasks)
   }
 
-  res.json(tasks);
-});
+  res.json(tasks)
+})
 
-// get a snippet by ID
-app.get('/tasks/:id', (req, res) => {
-  const tasksId = parseInt(req.params.id);
-  const tasks = tasks.find(tasks => tasks.id === tasksId);
+// get a task by ID
+app.get('/routes/tasks/:id', (req, res) => {
+  const taskId = parseInt(req.params.id)
+  const snippet = tasks.find(tasks => tasks.id === taskId)
 
   if (!tasks) {
-    return res.status(404).json({ error: 'tasks not found' });
+    return res.status(404).json({ error: 'task not found' })
   }
 
-  res.json(tasks);
-});
+  res.json(tasks)
+})
+
+// edit a task by ID
+app.put('/routes/tasks/:id', (req, res) => {
+  const tasksId = parseInt(req.params.id)
+  const {language, code} = req.body
+  let foundIndex = -1
+  tasks.map((s, index) => {
+    if (s.id == tasksId){
+      foundIndex = index
+    } 
+    return s
+  })
+  if (foundIndex == -1){
+    res.status(404).json("error: 'Snippet not found, not able to be updated")
+  } else {
+    snippets.splice(foundIndex, 1, {
+      "id":foundIndex+1,
+      "language":language,
+      "code":code
+    })
+  }
+  res.status(200).json(`Snippet with id=${tasksId} updated to {language: ${snippets[foundIndex].language}, code: ${snippets[foundIndex].code}}`)
+})
+//delete a task by ID
+app.delete('/routes/tasks/:id', (req, res) => {
+  const tasksId = parseInt(req.params.id)
+  const {nameTask, instruction} = req.body
+  let foundIndex = -1
+  snippets.map((s, index) => {
+    if (s.id == tasksId){
+      foundIndex = index
+    } 
+    return s
+  })
+  if (foundIndex == -1){
+    res.status(404).json("error: 'Task not found, not able to be deleted")
+  } else{
+    snippets.splice(foundIndex, 1)
+    console.log(tasks)
+  }
+  res.status(200).json(`Task with id=${tasksId} deleted`)
+})
 
 // start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  console.log(`Server is running on port ${PORT}`)
+})

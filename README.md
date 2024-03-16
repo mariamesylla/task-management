@@ -1,16 +1,16 @@
 # task-management
 
-# SWE Crypto Cupcakes
+# SWE tasks 
 
 This branch implements a very basic API which allows users to `POST` and `GET`
-cupcakes.
+tasks.
 
 A cupcake looks like this
 
 ```json
 {
   "id": 2,
-  "flavor": "Chocolate",
+  "name": "",
   "instructions": "leave outside for an hour"
 }
 ```
@@ -55,7 +55,7 @@ If you `npm i && npm run dev` you should be able to hit the API at
 Try getting a single cupcake with
 
 ```bash
-curl -v -XGET 'http://localhost:4000/cupcakes/3' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks/3' | json_pp
 ```
 
 Does it work? What do you see in the request and response? (N.b. in the output
@@ -64,16 +64,16 @@ part of the response.)
 
 Why did we choose `/3` and not `?id=3`? Which is the better implementation? Why?
 
-Try getting many cupcakes with
+Try getting many tasks with
 
 ```bash
-curl -v -XGET 'http://localhost:4000/cupcakes' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks' | json_pp
 ```
 
 and
 
 ```bash
-curl -v -XGET 'http://localhost:4000/cupcakes?flavor=chocolate' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks?name=' | json_pp
 ```
 
 What other query params could we provide to the users to make their life easier?
@@ -88,7 +88,7 @@ Try creating a cupcake with
 curl -v -XPOST \
 -H "Content-type: application/json" \
 -d '{ "flavor" : "marble", "instructions" : "just heat up and enjoy" }' \
-'http://localhost:4000/cupcakes' | json_pp
+'http://localhost:4000/tasks' | json_pp
 ```
 
 The API sends back the created resource! Why might this be useful for users of
@@ -163,11 +163,11 @@ If you were to sign in again, you would get a different token each time.
 
 ### Access a resource
 
-All of the `'/cupcakes'` endpoints have been protected. In order to access them,
+All of the `'/tasks'` endpoints have been protected. In order to access them,
 you don't need to send your password again, but instead you send your token!
 
 ```bash
-curl -v -XGET 'http://localhost:4000/cupcakes?flavor=chocolate' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks?flavor=chocolate' | json_pp
 ```
 
 will fail, but
@@ -175,7 +175,7 @@ will fail, but
 ```bash
 curl -v -XGET \
 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHVzZXIuY29tIiwiaWF0IjoxNjg2OTMxNTIzfQ.R7ZCtD6ieMkIriDQYN0s_DPHC1lMyM5CIGRp1UFbblo' \
-'http://localhost:4000/cupcakes?flavor=chocolate' | json_pp
+'http://localhost:4000/tasks?flavor=chocolate' | json_pp
 ```
 
 should succeed.
