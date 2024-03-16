@@ -4,15 +4,15 @@ const routes = require('./routes');
 const { auth } = require('express-openid-connect');
 
 const app = express();
-const PORT = process.env.PORT || 4000; // Use environment variable for port, fallback to 4000 if not specified
+const PORT = 4000;
 
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: process.env.SECRET, // Load secret from environment variable
+  secret: 'a long, randomly-generated string stored in env',
   baseURL: 'http://localhost:4000',
-  clientID: process.env.CLIENT_ID, // Load client ID from environment variable
-  issuerBaseURL: process.env.ISSUER_BASE_URL // Load issuer base URL from environment variable
+  clientID: 'r6k6Qugzo6DmFAuSjjmwtkiE9WlexKzr',
+  issuerBaseURL: 'https://dev-kqcvt5qlx045drmf.us.auth0.com'
 };
 
 app.use(express.json());
@@ -25,10 +25,10 @@ app.use('/tasks', routes.tasks);
 // array to store tasks
 const tasks = require('./seedData.json');
 
-// generate a unique ID for each task
-let taskId = tasks.length;
+// generate a unique ID for each tasks
+let id = tasks.length;
 
-// create a new task
+// create a new tasks
 app.post('/tasks', (req, res) => {
   const { name, instructions } = req.body;
 
@@ -39,14 +39,14 @@ app.post('/tasks', (req, res) => {
       .json({ error: 'name and instructions are required fields' });
   }
 
-  const newTask = {
-    id: ++taskId,
+  const tasks = {
+    id: ++id,
     name,
     instructions
   };
 
-  tasks.push(newTask);
-  res.status(201).json(newTask);
+  tasks.push(tasks);
+  res.status(201).json(tasks);
 });
 
 // get all tasks
@@ -54,25 +54,25 @@ app.get('/tasks', (req, res) => {
   const { name } = req.query;
 
   if (name) {
-    const filteredTasks = tasks.filter(
-      task => task.name.toLowerCase() === name.toLowerCase()
+    const filteredtasks = tasks.filter(
+      tasks => tasks.name.toLowerCase() === name.toLowerCase()
     );
-    return res.json(filteredTasks);
+    return res.json(filteredtasks);
   }
 
   res.json(tasks);
 });
 
-// get a task by ID
+// get a snippet by ID
 app.get('/tasks/:id', (req, res) => {
-  const taskId = parseInt(req.params.id);
-  const task = tasks.find(task => task.id === taskId);
+  const tasksId = parseInt(req.params.id);
+  const tasks = tasks.find(tasks => tasks.id === tasksId);
 
-  if (!task) {
-    return res.status(404).json({ error: 'task not found' });
+  if (!tasks) {
+    return res.status(404).json({ error: 'tasks not found' });
   }
 
-  res.json(task);
+  res.json(tasks);
 });
 
 // start the server
