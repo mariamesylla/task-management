@@ -14,6 +14,13 @@ function encrypt(plainText) {
   // the Intialization Vector is random data which is mixed into the plainText before encryption
   // it ensures that encrypting the same plainText twice does not result in the same
   // encryptedText, which prevents attacks
+
+
+  // check if plainText is string
+
+  if (typeof plainText !== 'string') {
+    throw new Error('The data argument must be of type string')
+  }
   const iv = crypto.randomBytes(16)
 
   // cipher implements the aes algo with the key and IV

@@ -2,26 +2,26 @@
     {
       "id": 1,
       "nameTask": "Clear cache",
-      "instructions": "Clear Laptop Google chrome cache"
+      "instruction": "Clear Laptop Google chrome cache"
     },
     {
       "id": 2,
       "nameTask": "Meeting with manager",
-      "instructions": "1-1 with manager at noon!"
+      "instruction": "1-1 with manager at noon!"
     },
     {
       "id": 3,
       "nameTask": "Deploy branch in E2",
-      "instructions": "Deploy changes in E2 for QA"
+      "instruction": "Deploy changes in E2 for QA"
     },
     {
       "id": 4,
       "nameTask": "Go to mentor KT ",
-      "instructions": "Join mentor's KT session this afternoon"
+      "instruction": "Join mentor's KT session this afternoon"
     },
     {
       "id": 5,
       "nameTask": "Reserve Room",
-      "instructions": "Reserve Room for presentation"
+      "instruction": "Reserve Room for presentation"
     }
   ]

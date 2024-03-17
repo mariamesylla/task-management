@@ -1,7 +1,7 @@
 const route = require('express').Router();
 const { encrypt, decrypt } = require('../utils/encrypt');
 
-const tasks = require('../seedData.json');
+const tasks = require('./seedData.json');
 
 tasks.forEach(task => {
   task.code = encrypt(task.code);
