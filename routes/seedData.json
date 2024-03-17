@@ -23,5 +23,82 @@
       "id": 5,
       "nameTask": "Reserve Room",
       "instruction": "Reserve Room for presentation"
+    },
+
+    {
+      "id": 6,
+      "nameTask": "Clear cache",
+      "instruction": "Clear Laptop Google chrome cache"
+    },
+    {
+      "id": 7,
+      "nameTask": "Meeting with manager",
+      "instruction": "1-1 with manager at noon!"
+    },
+    {
+      "id": 8,
+      "nameTask": "Deploy branch in E2",
+      "instruction": "Deploy changes in E2 for QA"
+    },
+    {
+      "id": 9,
+      "nameTask": "Go to mentor KT ",
+      "instruction": "Join mentor's KT session this afternoon"
+    },
+    {
+      "id": 10,
+      "nameTask": "Reserve Room",
+      "instruction": "Reserve Room for presentation"
+    },
+    {
+      "id": 11,
+      "nameTask": "Clear cache",
+      "instruction": "Clear Laptop Google chrome cache"
+    },
+    {
+      "id": 12,
+      "nameTask": "Meeting with manager",
+      "instruction": "1-1 with manager at noon!"
+    },
+    {
+      "id": 13,
+      "nameTask": "Deploy branch in E2",
+      "instruction": "Deploy changes in E2 for QA"
+    },
+    {
+      "id": 14,
+      "nameTask": "Go to mentor KT ",
+      "instruction": "Join mentor's KT session this afternoon"
+    },
+    {
+      "id": 15,
+      "nameTask": "Reserve Room",
+      "instruction": "Reserve Room for presentation"
+    },
+    {
+      "id": 16,
+      "nameTask": "Clear cache",
+      "instruction": "Clear Laptop Google chrome cache"
+    },
+    {
+      "id": 17,
+      "nameTask": "Meeting with manager",
+      "instruction": "1-1 with manager at noon!"
+    },
+    {
+      "id": 18,
+      "nameTask": "Deploy branch in E2",
+      "instruction": "Deploy changes in E2 for QA"
+    },
+    {
+      "id": 19,
+      "nameTask": "Go to mentor KT ",
+      "instruction": "Join mentor's KT session this afternoon"
+    },
+    {
+      "id": 20,
+      "nameTask": "Reserve Room",
+      "instruction": "Reserve Room for presentation"
     }
+
   ]

@@ -1,6 +1,7 @@
 const route = require('express').Router();
 const { encrypt, decrypt } = require('../utils/encrypt');
 
+
 const tasks = require('./seedData.json');
 
 tasks.forEach(task => {
@@ -19,10 +20,10 @@ route.post('/', (req, res) => {
   const task = {
     id: id++,
     nameTask,
-    instruction: encrypt(instruction)
+    instruction
   };
 
-  tasks.push(task);
+  tasks.push({...task, instruction : encrypt(instruction)});
   res.status(201).json(task);
 });
 

@@ -53,11 +53,5 @@ function decrypt(input) {
   return decryptedText
 }
 
-const text = 'Hello, world!'
-const encrypted = encrypt(text)
-const decrypted = decrypt(encrypted)
-console.log("encrypted text sample:", encrypted)
-console.log("decrypted text sample:", decrypted)
-
 
 module.exports = { encrypt, decrypt }
