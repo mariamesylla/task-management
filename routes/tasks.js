@@ -4,22 +4,22 @@ const { encrypt, decrypt } = require('../utils/encrypt');
 const tasks = require('./seedData.json');
 
 tasks.forEach(task => {
-  task.code = encrypt(task.code);
+  task.instruction = encrypt(task.instruction);
 });
 
 let id = tasks.length + 1;
 
 route.post('/', (req, res) => {
-  const { nameTask, code } = req.body;
+  const { nameTask, instruction } = req.body;
 
-  if (!nameTask || !code) {
-    return res.status(400).json({ error: 'Name and code are required fields' });
+  if (!nameTask || !instruction) {
+    return res.status(400).json({ error: 'Name and instruction are required fields' });
   }
 
   const task = {
     id: id++,
     nameTask,
-    code: encrypt(code)
+    instruction: encrypt(instruction)
   };
 
   tasks.push(task);
@@ -29,18 +29,18 @@ route.post('/', (req, res) => {
 route.get('/', (req, res) => {
   const { nameTask } = req.query;
 
-  const decodedTasks = tasks.map(task => ({
+  const deinstructiondTasks = tasks.map(task => ({
     ...task,
-    code: decrypt(task.code)
+    instruction: decrypt(task.instruction)
   }));
 
   if (nameTask) {
     const regex = new RegExp(nameTask, "gi");
-    const filteredTasks = decodedTasks.filter(task => task.nameTask.match(regex));
+    const filteredTasks = deinstructiondTasks.filter(task => task.nameTask.match(regex));
     return res.json(filteredTasks);
   }
 
-  res.json(decodedTasks);
+  res.json(deinstructiondTasks);
 });
 
 route.get('/:id', (req, res) => {
@@ -51,21 +51,21 @@ route.get('/:id', (req, res) => {
     return res.status(404).json({ error: 'Task not found' });
   }
 
-  task = { ...task, code: decrypt(task.code) };
+  task = { ...task, instruction: decrypt(task.instruction) };
 
   res.json(task);
 });
 
 route.put('/:id', (req, res) => {
   const taskId = parseInt(req.params.id);
-  const { nameTask, code } = req.body;
+  const { nameTask, instruction } = req.body;
   const taskIndex = tasks.findIndex(task => task.id === taskId);
 
   if (taskIndex === -1) {
     return res.status(404).json({ error: `Task with id=${taskId} not found, cannot be updated` });
   }
 
-  tasks[taskIndex] = { ...tasks[taskIndex], nameTask, code: encrypt(code) };
+  tasks[taskIndex] = { ...tasks[taskIndex], nameTask, instruction: encrypt(instruction) };
 
   res.status(200).json({ message: `Task with id=${taskId} updated`, task: tasks[taskIndex] });
 });
