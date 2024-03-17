@@ -1,108 +1,85 @@
-require('dotenv').config() // bring in environment variables
-const express = require('express')
-const app = express()
-const PORT = 4000
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const PORT = 4000;
 
-app.use(express.json())
+app.use(express.json());
 
+const tasks = require('./routes/seedData.json');
+const routes = require('./routes');
 
-// array to store tasks
-const tasks = require('./routes/seedData.json')
-const routes = require('./routes')
+app.use(express.json());
 
-// generate a unique ID for each snippet
-let id = tasks.length + 1
+// Use routes
+app.use('/tasks', routes.tasks);
+app.use('/user', routes.user);
 
-// create a new snippet
-app.post('/routes/tasks', (req, res) => {
-  const { nameTask, instruction } = req.body
+let id = tasks.length + 1;
 
-  // basic validation
+app.post('/tasks', (req, res) => {
+  const { nameTask, instruction } = req.body;
+
   if (!nameTask || !instruction) {
-    return res
-      .status(400)
-      .json({ error: 'name and instruction are required fields' })
+    return res.status(400).json({ error: 'Name and instruction are required fields' });
   }
 
   const task = {
     id: id++,
     nameTask,
     instruction
+  };
+
+  tasks.push(task);
+  res.status(201).json(task);
+});
+
+app.get('/tasks', (req, res) => {
+  const { nameTask } = req.query;
+
+  if (nameTask) {
+    const filteredTasks = tasks.filter(task => task.nameTask.toLowerCase() === nameTask.toLowerCase());
+    return res.json(filteredTasks);
   }
 
-  tasks.push(task)
-  res.status(201).json(task)
-})
+  res.json(tasks);
+});
 
-// get all tasks
-app.get('/routes/tasks', (req, res) => {
-  const { tasks } = req.query
+app.get('/tasks/:id', (req, res) => {
+  const taskId = parseInt(req.params.id);
+  const task = tasks.find(task => task.id === taskId);
 
-  if (tasks) {
-    const filteredtasks = tasks.filter(
-      tasks => tasks.nameTask.toLowerCase() === tasks.toLowerCase()
-    )
-    return res.json(filteredtasks)
+  if (!task) {
+    return res.status(404).json({ error: 'Task not found' });
   }
 
-  res.json(tasks)
-})
+  res.json(task);
+});
 
-// get a task by ID
-app.get('/routes/tasks/:id', (req, res) => {
-  const taskId = parseInt(req.params.id)
-  const snippet = tasks.find(tasks => tasks.id === taskId)
+app.put('/tasks/:id', (req, res) => {
+  const taskId = parseInt(req.params.id);
+  const { nameTask, instruction } = req.body;
+  const taskIndex = tasks.findIndex(task => task.id === taskId);
 
-  if (!tasks) {
-    return res.status(404).json({ error: 'task not found' })
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: `Task with id=${taskId} not found, cannot be updated` });
   }
 
-  res.json(tasks)
-})
+  tasks[taskIndex] = { id: taskId, nameTask, instruction };
+  res.status(200).json({ message: `Task with id=${taskId} updated`, task: tasks[taskIndex] });
+});
 
-// edit a task by ID
-app.put('/routes/tasks/:id', (req, res) => {
-  const tasksId = parseInt(req.params.id)
-  const {language, code} = req.body
-  let foundIndex = -1
-  tasks.map((s, index) => {
-    if (s.id == tasksId){
-      foundIndex = index
-    } 
-    return s
-  })
-  if (foundIndex == -1){
-    res.status(404).json("error: 'Snippet not found, not able to be updated")
-  } else {
-    snippets.splice(foundIndex, 1, {
-      "id":foundIndex+1,
-      "language":language,
-      "code":code
-    })
-  }
-  res.status(200).json(`Snippet with id=${tasksId} updated to {language: ${snippets[foundIndex].language}, code: ${snippets[foundIndex].code}}`)
-})
-//delete a task by ID
-app.delete('/routes/tasks/:id', (req, res) => {
-  const tasksId = parseInt(req.params.id)
-  const {nameTask, instruction} = req.body
-  let foundIndex = -1
-  snippets.map((s, index) => {
-    if (s.id == tasksId){
-      foundIndex = index
-    } 
-    return s
-  })
-  if (foundIndex == -1){
-    res.status(404).json("error: 'Task not found, not able to be deleted")
-  } else{
-    snippets.splice(foundIndex, 1)
-    console.log(tasks)
-  }
-  res.status(200).json(`Task with id=${tasksId} deleted`)
-})
+app.delete('/tasks/:id', (req, res) => {
+  const taskId = parseInt(req.params.id);
+  const taskIndex = tasks.findIndex(task => task.id === taskId);
 
-// start the server
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: `Task with id=${taskId} not found, cannot be deleted` });
+  }
+
+  tasks.splice(taskIndex, 1);
+  res.status(200).json({ message: `Task with id=${taskId} deleted` });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});

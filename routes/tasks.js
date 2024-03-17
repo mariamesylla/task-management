@@ -1,144 +1,86 @@
-const route = require('express').Router()
-const { encrypt, decrypt } = require('../utils/encrypt')
+const route = require('express').Router();
+const { encrypt, decrypt } = require('../utils/encrypt');
 
-// array to store tasks
-const tasks = require('../seedData.json')
+const tasks = require('../seedData.json');
 
-//encrypt each task's code
-tasks.map((task, index) => {
-  // task.code = encrypt(task.code) (another way to accomplish the same thing!)
-  tasks[index] = { ...task, code: encrypt(task.code) }
-})
+tasks.forEach(task => {
+  task.code = encrypt(task.code);
+});
 
-// generate a unique ID for each task
-let id = tasks.length + 1
+let id = tasks.length + 1;
 
-/**
- * Create a task
- */
 route.post('/', (req, res) => {
-  const { nameTaskuage, code } = req.body
+  const { nameTask, code } = req.body;
 
-  // basic validation
-  if (!nameTaskuage || !code) {
-    return res
-      .status(400)
-      .json({ error: 'Name and instruction are required fields' })
+  if (!nameTask || !code) {
+    return res.status(400).json({ error: 'Name and code are required fields' });
   }
 
   const task = {
     id: id++,
     nameTask,
-    instruction
+    code: encrypt(code)
+  };
+
+  tasks.push(task);
+  res.status(201).json(task);
+});
+
+route.get('/', (req, res) => {
+  const { nameTask } = req.query;
+
+  const decodedTasks = tasks.map(task => ({
+    ...task,
+    code: decrypt(task.code)
+  }));
+
+  if (nameTask) {
+    const regex = new RegExp(nameTask, "gi");
+    const filteredTasks = decodedTasks.filter(task => task.nameTask.match(regex));
+    return res.json(filteredTasks);
   }
 
-  // overwrite code with encrypted before storing
-  tasks.push({ ...task, code: encrypt(code) })
+  res.json(decodedTasks);
+});
 
-  // send back the unencrypted task
-  res.status(201).json(task)
-})
-
-/**
- * Get all tasks
- */
-route.get('/', (req, res) => {
-  const { nameTask } = req.query
-
-  console.log("encrypted code tasks that are stored", tasks)
-
-  // decrypt all tasks
-  const decodedtasks = tasks.map(task => ({
-     ...task,
-    code: decrypt(task.code)
-  }))
-
-  // handle query strings
-  // if (nameTask) {
-  //   const filteredtasks = decodedtasks.filter(
-  //     task => task.nameTaskuage.toLowerCase() === nameTask.toLowerCase()
-  //   )
-  //   return res.json(filteredtasks)
-  // }
-
-   //filter more than exact match
-   if (nameTask) {
-    const regex = new RegExp(nameTask, "gi")
-    const filteredtasks = decodedtasks.filter(
-      task => task.nameTaskuage.match(regex)
-    )
-    return res.json(filteredtasks)
-    }
-
-  console.log("decrypted code from get request that will be sent as a response: ", decodedtasks)
-  res.json(decodedtasks)
-})
-
-/**
- * Get one task
- */
 route.get('/:id', (req, res) => {
-  const taskId = parseInt(req.params.id)
-  let task = tasks.find(task => task.id === taskId)
-
-  console.log("encrypted code task that is stored", task)
+  const taskId = parseInt(req.params.id);
+  let task = tasks.find(task => task.id === taskId);
 
   if (!task) {
-    return res.status(404).json({ error: 'task not found' })
+    return res.status(404).json({ error: 'Task not found' });
   }
-  // decrypt before sending back
-  task = {...task, 'code': decrypt(task.code)}
- 
-  console.log("decrypted code from get request that will be sent as a response: ", task)
 
-  res.json(task)
-})
+  task = { ...task, code: decrypt(task.code) };
 
+  res.json(task);
+});
 
-//STRETCH GOALS
-
-// edit a task by ID
 route.put('/:id', (req, res) => {
-  const taskId = parseInt(req.params.id)
-  const {nameTaskuage, code} = req.body
-  let foundIndex = -1
-  tasks.map((s, index) => {
-    if (s.id == taskId){
-      foundIndex = index
-    } 
-    return s
-  })
-  if (foundIndex == -1){
-    res.status(404).json("error: 'task not found, not able to be updated")
-  } else {
-    tasks.splice(foundIndex, 1, {
-      ...tasks[foundIndex],
-      "nameTaskuage": nameTaskuage,
-      "code": encrypt(code)
-    })
+  const taskId = parseInt(req.params.id);
+  const { nameTask, code } = req.body;
+  const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: `Task with id=${taskId} not found, cannot be updated` });
   }
 
-  res.status(200).json(`task with id=${taskId} updated to {nameTaskuage: ${tasks[foundIndex].nameTaskuage}, code: ${tasks[foundIndex].code}}`)
-})
+  tasks[taskIndex] = { ...tasks[taskIndex], nameTask, code: encrypt(code) };
 
-//delete a task by ID
+  res.status(200).json({ message: `Task with id=${taskId} updated`, task: tasks[taskIndex] });
+});
+
 route.delete('/:id', (req, res) => {
-  const taskId = parseInt(req.params.id)
-  const {nameTaskuage, code} = req.body
-  let foundIndex = -1
-  tasks.map((s, index) => {
-    if (s.id == taskId){
-      foundIndex = index
-    } 
-    return s
-  })
-  if (foundIndex == -1){
-    res.status(404).json("error: 'task not found, not able to be deleted")
-  } else{
-    tasks.splice(foundIndex, 1)
-    console.log(tasks)
-  }
-  res.status(200).json(`task with id=${taskId} deleted`)
-})
+  const taskId = parseInt(req.params.id);
+  const taskIndex = tasks.findIndex(task => task.id === taskId);
 
-module.exports = route
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: `Task with id=${taskId} not found, cannot be deleted` });
+  }
+
+  tasks.splice(taskIndex, 1);
+
+  res.status(200).json({ message: `Task with id=${taskId} deleted` });
+});
+
+module.exports = route;
