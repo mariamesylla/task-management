@@ -4,9 +4,11 @@ const { encrypt, decrypt } = require('../utils/encrypt');
 
 const tasks = require('./seedData.json');
 
-tasks.forEach(task => {
-  task.instruction = encrypt(task.instruction);
-});
+
+//encrypt each instruction
+tasks.map((tasks, index) => {
+  tasks[index] = {...tasks, instruction: encrypt(tasks.instruction)}
+ })
 
 let id = tasks.length + 1;
 
@@ -30,7 +32,7 @@ route.post('/', (req, res) => {
 route.get('/', (req, res) => {
   const { nameTask } = req.query;
 
-  const deinstructiondTasks = tasks.map(task => ({
+  const decodedTasks = tasks.map(task => ({
     ...task,
     instruction: decrypt(task.instruction)
   }));
@@ -40,8 +42,8 @@ route.get('/', (req, res) => {
     const filteredTasks = deinstructiondTasks.filter(task => task.nameTask.match(regex));
     return res.json(filteredTasks);
   }
-
-  res.json(deinstructiondTasks);
+  console.log("This is the decoded instruction",decodedTasks)
+  res.json(decodedTasks);
 });
 
 route.get('/:id', (req, res) => {

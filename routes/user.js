@@ -14,10 +14,12 @@ route.post('/', basicAuth, async (req, res) => {
   const id = users.length + 1
 
   /* To test this, we want to create an authorization header, we can do this through
-    echo -n 'test@user.com:password123' | base64
-      this will give us 'dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyMw=='
-    echo -n 'secondtime@user.com:password123456' | base64
-      c2Vjb25kdGltZUB1c2VyLmNvbTpwYXNzd29yZDEyMzQ1Ng==
+    echo -n 'magnan@taskm.com:forever11' | base64
+    bWFnbmFuQHRhc2ttLmNvbTpmb3JldmVyMTE=
+
+    echo -n 'admin@taskm.com:rootuser' | base64
+    YWRtaW5AdGFza20uY29tOnJvb3R1c2Vy
+
   */
 
 
@@ -27,6 +29,7 @@ route.post('/', basicAuth, async (req, res) => {
 
   console.log("hashed", hashedPassword)
   console.log("password", password)
+  
 /* example - returns:
   hashed $2b$10$lHmiXGV3CBglqRv9ZDy/cuL.zS8IoDMEa4B.fejbPAef3JqSLtQru
   password password123456

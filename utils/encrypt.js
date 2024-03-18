@@ -53,5 +53,11 @@ function decrypt(input) {
   return decryptedText
 }
 
+const text = 'Push new files to GEM server.'
+const encrypted = encrypt(text)
+const decrypted = decrypt(encrypted)
+console.log("encrypted text sample:", encrypted)
+console.log("decrypted text sample:", decrypted)
+
 
 module.exports = { encrypt, decrypt }

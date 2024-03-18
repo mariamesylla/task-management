@@ -2,103 +2,36 @@
     {
       "id": 1,
       "nameTask": "Clear cache",
-      "instruction": "Clear Laptop Google chrome cache"
+      "instruction": "ea4e16aa311275684925b3815b5202fa:69f575c4f79188f1bda171d072f28975a797dc162998293fdab6f1f799e39611bf179ce0df1ab943caa68ccfd34c0c55"
     },
     {
       "id": 2,
       "nameTask": "Meeting with manager",
-      "instruction": "1-1 with manager at noon!"
+      "instruction": "87d822db91264fe53e13b84c63e5f3de:d3ba339a7b123be7118bf9de25dd927b5f78ea03aeac64bb37266180fcfa4958415948ba2b796bbb66ecfe2cbb75a16ae998868e2ee85db943783c5146bff02f"
     },
     {
       "id": 3,
       "nameTask": "Deploy branch in E2",
-      "instruction": "Deploy changes in E2 for QA"
+      "instruction": "2fa0111289d59aaee781fbcb3bd1633b:542464111bc32f4946c9f92a6bfa789e1d2bcf5121fe7fb9ce8a5a79671f89bb"
     },
     {
       "id": 4,
       "nameTask": "Go to mentor KT ",
-      "instruction": "Join mentor's KT session this afternoon"
+      "instruction": "6b42b971d891044717170352e2d36f27:2a27bbff052d21f26672223b772f9ba3df04d50df432b3fd090e64aec921aaf8c24ce9c97fceb3a53575f1dd3b6fb753"
     },
     {
       "id": 5,
       "nameTask": "Reserve Room",
-      "instruction": "Reserve Room for presentation"
+      "instruction": "11a36b6f6873a947f2013d0508ca374f:3532b262dde797ae439f70b3452cc72b045fd8bef302372bc694300f6e857043"
     },
-
     {
       "id": 6,
-      "nameTask": "Clear cache",
-      "instruction": "Clear Laptop Google chrome cache"
+      "nameTask": "Create new branch",
+      "instruction": "0111afde2f031a11d62682e79c8dca1a:5e150b6ce32e2b25537874cda94fbfff7fd3c9a935ebe2ea0340ca3dd1b23645f9b6b5ee283911421243beca86fb5505"
     },
     {
       "id": 7,
-      "nameTask": "Meeting with manager",
-      "instruction": "1-1 with manager at noon!"
-    },
-    {
-      "id": 8,
-      "nameTask": "Deploy branch in E2",
-      "instruction": "Deploy changes in E2 for QA"
-    },
-    {
-      "id": 9,
-      "nameTask": "Go to mentor KT ",
-      "instruction": "Join mentor's KT session this afternoon"
-    },
-    {
-      "id": 10,
-      "nameTask": "Reserve Room",
-      "instruction": "Reserve Room for presentation"
-    },
-    {
-      "id": 11,
-      "nameTask": "Clear cache",
-      "instruction": "Clear Laptop Google chrome cache"
-    },
-    {
-      "id": 12,
-      "nameTask": "Meeting with manager",
-      "instruction": "1-1 with manager at noon!"
-    },
-    {
-      "id": 13,
-      "nameTask": "Deploy branch in E2",
-      "instruction": "Deploy changes in E2 for QA"
-    },
-    {
-      "id": 14,
-      "nameTask": "Go to mentor KT ",
-      "instruction": "Join mentor's KT session this afternoon"
-    },
-    {
-      "id": 15,
-      "nameTask": "Reserve Room",
-      "instruction": "Reserve Room for presentation"
-    },
-    {
-      "id": 16,
-      "nameTask": "Clear cache",
-      "instruction": "Clear Laptop Google chrome cache"
-    },
-    {
-      "id": 17,
-      "nameTask": "Meeting with manager",
-      "instruction": "1-1 with manager at noon!"
-    },
-    {
-      "id": 18,
-      "nameTask": "Deploy branch in E2",
-      "instruction": "Deploy changes in E2 for QA"
-    },
-    {
-      "id": 19,
-      "nameTask": "Go to mentor KT ",
-      "instruction": "Join mentor's KT session this afternoon"
-    },
-    {
-      "id": 20,
-      "nameTask": "Reserve Room",
-      "instruction": "Reserve Room for presentation"
-    }
-
+      "nameTask": "GEM push new files",
+      "instruction": "7b5b65e32d1cf9ab72e63471d3c3bee6:6c73e540a1851c1dffa08d050a7c6f4d07e9daaa59e211069904a65b21ef1898"
+    }  
   ]
