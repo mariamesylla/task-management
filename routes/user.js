@@ -7,53 +7,7 @@ const authorize = require('../middleware/authorize')
 // array to store users
 const users = []
 
-/**
- * Create a user (sign up)
- */
-route.post('/', basicAuth, async (req, res) => {
-  // get the user data, thanks to basicAuth middleware!
-  const { email, password } = req.user
-  const id = users.length + 1
 
-  /* To test this, we want to create an authorization header, we can do this through
-    echo -n 'magnan@taskm.com:forever11' | base64
-    bWFnbmFuQHRhc2ttLmNvbTpmb3JldmVyMTE=
-
-    echo -n 'admin@taskm.com:rootuser' | base64
-    YWRtaW5AdGFza20uY29tOnJvb3R1c2Vy
-
-  */
-
-
-  // hash the password
-  const saltRounds = 10
-  const hashedPassword = await bcrypt.hash(password, saltRounds)
-
-  console.log("hashed", hashedPassword)
-  console.log("password", password)
-
-/* example - returns:
-  hashed $2b$10$lHmiXGV3CBglqRv9ZDy/cuL.zS8IoDMEa4B.fejbPAef3JqSLtQru
-  password password123456
-*/
-
-  const user = {
-    id,
-    email,
-    password: hashedPassword
-  }
-
-  // save the user
-  users.push(user)
-
-  // don't send back the hashed password
-  res.status(201).json({ id, email })
-})
-
-/**
- * BONUS:
- * Get the user specified by the Authorization header
- */
 
 /**
  * Sign in a user

@@ -1,5 +1,6 @@
 const route = require('express').Router();
 const { encrypt, decrypt } = require('../utils/encrypt');
+const authorize = require('../middleware/authorize')
 
 
 const tasks = require('./seedData.json');
@@ -12,7 +13,7 @@ tasks.map((tasks, index) => {
 
 let id = tasks.length + 1;
 
-route.post('/', (req, res) => {
+route.post('/', authorize, (req, res) => {
   const { nameTask, instruction } = req.body;
 
   if (!nameTask || !instruction) {
@@ -29,7 +30,7 @@ route.post('/', (req, res) => {
   res.status(201).json(task);
 });
 
-route.get('/', (req, res) => {
+route.get('/',authorize,  (req, res) => {
   const { nameTask } = req.query;
 
   const decodedTasks = tasks.map(task => ({
@@ -46,7 +47,7 @@ route.get('/', (req, res) => {
   res.json(decodedTasks);
 });
 
-route.get('/:id', (req, res) => {
+route.get('/:id', authorize, (req, res) => {
   const taskId = parseInt(req.params.id);
   let task = tasks.find(task => task.id === taskId);
 
@@ -59,7 +60,7 @@ route.get('/:id', (req, res) => {
   res.json(task);
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authorize,  (req, res) => {
   const taskId = parseInt(req.params.id);
   const { nameTask, instruction } = req.body;
   const taskIndex = tasks.findIndex(task => task.id === taskId);
