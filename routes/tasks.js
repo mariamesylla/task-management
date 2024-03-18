@@ -40,7 +40,7 @@ route.get('/',authorize,  (req, res) => {
 
   if (nameTask) {
     const regex = new RegExp(nameTask, "gi");
-    const filteredTasks = deinstructiondTasks.filter(task => task.nameTask.match(regex));
+    const filteredTasks = decodedTasks.filter(task => task.nameTask.match(regex));
     return res.json(filteredTasks);
   }
   console.log("This is the decoded instruction",decodedTasks)
