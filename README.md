@@ -1,68 +1,32 @@
-# Snippr API
+# tasks Management  API
 
-Welcome to Snippr! The feature branches in this repo represent the evolution of
-a sample app. Each week we can demo a new branch, look at what has changed and
-why:
 
-1. `snippets-api`
-2. `security`
-3. `tokens`
-4. `auth0`
-
-This branch implements a very basic API which allows users to `POST` and `GET`
-code snippets.
-
-A snippet looks like this
+A task looks like this
 
 ```json
 {
   "id": 2,
-  "language": "Python",
-  "code": "def add(a, b):\n    return a + b"
+  "nameTask": "Clear cache",
+  "instruction": "def add(a, b):\n    return a + b"
 }
 ```
 
-## Coach Notes
 
-The focus on this session is building principled APIs. You will find that the
-code in this API is imperfect in many ways, and that is a good thing. The reason
-for giving you a codebase up front rather than starting from scratch means we
-can model _codebase exploration_ and _refactoring_ - two very important skills
-on-the-job.
-
-As you explore the codebase with the apprentices, be sure to point out any of
-the features which align with the learning objectives, and make as many
-improvements as you wish (but please don't push refactors to the remote
-branch!). You could take suggestions from the apprentices, drop hints to see if
-they spot some refactors, or take the lead if they seem hesitant.
-
-## Things to see and do
-
-### Snippet ID
+### Task ID
 
 It could be a chance to talk about the `++` operator and the off-by-one error
-(why is `snippets.length + 1` the correct initial value?)
+(why is `tasks.length + 1` the correct initial value?)
 
-### Response codes
-
-Have a look at the response codes and see if apprentices recognise any of them.
-Have they used these before? Why are they important?
-
-### Error handling and validation
-
-There isn't much! Where might we want to implement some error handling or
-validation? Can apprentices suggest any points where errors may occur that
-require handling? Anything more we could do to improve validation?
 
 ### Make some requests
 
 If you `npm i && npm run dev` you should be able to hit the API at
 `localhost:4000`
 
-Try getting a single snippet with
+Try getting a single task with
 
 ```bash
-curl -v -XGET 'http://localhost:4000/snippet/3' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks/3' | json_pp
 ```
 
 Does it work? What do you see in the request and response? (N.b. in the output
@@ -71,51 +35,31 @@ part of the response.)
 
 Why did we choose `/3` and not `?id=3`? Which is the better implementation? Why?
 
-Try getting many snippets with
+Try getting many tasks with
 
 ```bash
-curl -v -XGET 'http://localhost:4000/snippet' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks' | json_pp
 ```
 
 and
 
 ```bash
-curl -v -XGET 'http://localhost:4000/snippet?lang=python' | json_pp
+curl -v -XGET 'http://localhost:4000/tasks?nameTask=' | json_pp
 ```
 
-What other query params could we provide to the users to make their life easier?
-(E.g. pagination, sorting).
-
-What design problems are there with this endpoint? (E.g. what if there are two
-million rows of data?)
-
-Try creating a snippet with
+Try creating a task with
 
 ```bash
 curl -v -XPOST \
 -H "Content-type: application/json" \
--d '{ "code" : "print(2 + 2)", "language" : "Python" }' \
-'http://localhost:4000/snippet' | json_pp
+-d '{ "nameTask" : "", "instruction" : "" }' \
+'http://localhost:4000/tasks' | json_pp
 ```
 
 The API sends back the created resource! Why might this be useful for users of
 the API?
 
-## Next steps
 
-Apprentices will be given the specification for Snippr, and also some guidance
-on which framework aligns with their language. It is their turn to head off and
-try to implement the spec for themselves.
-
-## Coach notes
-This branch deals with two security measures:
-
-- encrypting the snippets
-- creating user accounts
-
-We have also refactored into separate routes for readability.
-
-## Coach notes
 
 The big concepts at play are
 
@@ -124,11 +68,7 @@ The big concepts at play are
 - the [basic auth](https://swe-docs.netlify.app/backend/basic-auth.html)
   protocol
 
-The primers linked to above are designed for colleagues to brush up on the
-details, but it's fine to share them with apprentices to if you think they would
-appreciate any of the details.
 
-## Things to see and do
 
 ### encrypt.js
 
@@ -153,7 +93,7 @@ df11c0c1d288a5dd9fc5e1aa0b06cca0b591244e8f033d47f23130dd2ac2c2a3
 (You will notice that this is 64 characters long: 1 byte in hex is represented
 by a pair of characters.)
 
-Save your key in the `.env` file, then you can add some code to `encrypt.js`
+Save your key in the `.env` file, then you can add some nameTask to `encrypt.js`
 
 ```js
 const text = 'Hello, world!'
@@ -169,16 +109,16 @@ and let them see you doing this step.
 
 ### Encrypting user data
 
-In `snippet.js` we can see that new posts are now being encrypted!
+In `tasks.js` we can see that new posts are now being encrypted!
 
-Try adding `console.log` in the `POST /snippet` endpoint so you can see the data
+Try adding `console.log` in the `POST /tasks` endpoint so you can see the data
 which actually gets stored, then try:
 
 ```bash
 curl -v -XPOST \
 -H "Content-type: application/json" \
--d '{ "code" : "print(2 + 2)", "language" : "Python" }' \
-'http://localhost:5000/snippet' | json_pp
+-d '{ "nameTask" : "", "instruction" : "" }' \
+'http://localhost:4000/tasks' | json_pp
 ```
 
 Notice that the data is encrypted in the data store, but decrypted before being
@@ -191,7 +131,7 @@ To create a user, hit
 ```bash
 curl -v -XPOST \
 -H 'Authorization: Basic dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyMw==' \
-'http://localhost:5000/user' | json_pp
+'http://localhost:4000/user' | json_pp
 ```
 
 Note that `dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyMw==` is the Base 64 encoding of the
@@ -218,14 +158,14 @@ Try accessing it with the header (you need to `POST` this user first!)
 ```bash
 curl -v -XGET \
 -H 'Authorization: Basic dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyMw==' \
-'http://localhost:5000/user' | json_pp
+'http://localhost:4000/user' | json_pp
 ```
 
 without the header
 
 ```bash
 curl -v -XGET \
-'http://localhost:5000/user' | json_pp
+'http://localhost:4000/user' | json_pp
 ```
 
 or with the wrong password
@@ -233,7 +173,7 @@ or with the wrong password
 ```bash
 curl -v -XGET \
 -H 'Authorization: Basic dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyNA==' \
-'http://localhost:5000/user' | json_pp
+'http://localhost:4000/user' | json_pp
 ```
 
 ## Next steps
