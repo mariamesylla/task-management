@@ -7,9 +7,6 @@ const tasks = require('./seedData.json');
 
 
 //encrypt each instruction
-tasks.map((tasks, index) => {
-  tasks[index] = {...tasks, instruction: encrypt(tasks.instruction)}
- })
 
 let id = tasks.length + 1;
 
