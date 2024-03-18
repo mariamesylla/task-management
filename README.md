@@ -7,7 +7,7 @@ A task looks like this
 {
   "id": 2,
   "nameTask": "Clear cache",
-  "instruction": "def add(a, b):\n    return a + b"
+  "instruction": "ea4e16aa311275684925b3815b5202fa:69f575c4f79188f1bda171d072f28975a797dc162998293fdab6f1f799e39611bf179ce0df1ab943caa68ccfd34c0c55"
 }
 ```
 
