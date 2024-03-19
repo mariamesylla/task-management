@@ -57,3 +57,12 @@ route.get('/', authorize, async (req, res) => {
 })
 
 module.exports = route
+
+/* To create an authorization header, we can do this through
+    echo -n 'magnan@taskm.com:forever11' | base64
+    bWFnbmFuQHRhc2ttLmNvbTpmb3JldmVyMTE=
+
+    echo -n 'admin@taskm.com:rootuser' | base64
+    YWRtaW5AdGFza20uY29tOnJvb3R1c2Vy
+
+  */

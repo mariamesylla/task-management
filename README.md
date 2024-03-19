@@ -154,3 +154,11 @@ should succeed.
 
 This is the middleware which parses out the token, and then checks that it was
 signed with the `TOKEN_SECRET`, verifying that it really came from our server.
+
+
+## To create an authorization header, we can do this through
+    echo -n 'magnan@taskm.com:forever11' | base64
+    bWFnbmFuQHRhc2ttLmNvbTpmb3JldmVyMTE=
+
+    echo -n 'admin@taskm.com:rootuser' | base64
+    YWRtaW5AdGFza20uY29tOnJvb3R1c2Vy
