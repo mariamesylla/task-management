@@ -5,7 +5,7 @@ async function authorize(req, res, next) {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Access ')) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ error: 'Access Unauthorized' })
   }
 
   const accessToken = authHeader.split(' ')[1]

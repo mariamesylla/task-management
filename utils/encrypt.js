@@ -1,8 +1,6 @@
 require('dotenv').config()
 const crypto = require('crypto')
-
 const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex')
-
 const algo = 'aes-256-cbc'
 
 // encrypt the plainText
@@ -40,4 +38,13 @@ const decrypted = decrypt(encrypted)
 console.log("encrypted text sample:", encrypted)
 console.log("decrypted text sample:", decrypted)
 
+function encryptInstruction(plainText) {
+
+const text = 'Add instruction here'
+const encrypted = encrypt(text)
+const decrypted = decrypt(encrypted)
+console.log("encrypted text sample:", encrypted)
+console.log("decrypted text sample:", decrypted)
+
+}
 module.exports = { encrypt, decrypt }

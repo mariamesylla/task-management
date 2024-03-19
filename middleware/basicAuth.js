@@ -3,7 +3,7 @@ function basicAuth(req, res, next) {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Basic ')) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    return res.status(401).json({ error: 'Access Unauthorized' })
   }
 
   const encodedCredentials = authHeader.split(' ')[1]

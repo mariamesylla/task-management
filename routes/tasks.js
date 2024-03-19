@@ -27,6 +27,15 @@ route.post('/', authorize, (req, res) => {
   res.status(201).json(task);
 });
 
+
+
+// Get all tasks encrypted when not logged in
+route.get('/home', (req, res) => {
+  res.json(tasks);
+});
+
+//When logged in : 
+
 // Get all tasks 
 route.get('/',authorize,  (req, res) => {
   const { nameTask } = req.query;
