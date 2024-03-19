@@ -14,8 +14,10 @@ app.use(express.json());
 app.use('/tasks', routes.tasks);
 app.use('/user', routes.user);
 
+// array to store tasks
 let id = tasks.length + 1;
 
+// Create a task (sign up)
 app.post('/tasks', (req, res) => {
   const { nameTask, instruction } = req.body;
 
@@ -33,6 +35,7 @@ app.post('/tasks', (req, res) => {
   res.status(201).json(task);
 });
 
+// Get all tasks
 app.get('/tasks', (req, res) => {
   const { nameTask } = req.query;
 
@@ -44,6 +47,7 @@ app.get('/tasks', (req, res) => {
   res.json(tasks);
 });
 
+// Get a task by id
 app.get('/tasks/:id', (req, res) => {
   const taskId = parseInt(req.params.id);
   const task = tasks.find(task => task.id === taskId);
@@ -55,6 +59,7 @@ app.get('/tasks/:id', (req, res) => {
   res.json(task);
 });
 
+// Update a task
 app.put('/tasks/:id', (req, res) => {
   const taskId = parseInt(req.params.id);
   const { nameTask, instruction } = req.body;
@@ -68,6 +73,7 @@ app.put('/tasks/:id', (req, res) => {
   res.status(200).json({ message: `Task with id=${taskId} updated`, task: tasks[taskIndex] });
 });
 
+// Delete a task
 app.delete('/tasks/:id', (req, res) => {
   const taskId = parseInt(req.params.id);
   const taskIndex = tasks.findIndex(task => task.id === taskId);
@@ -80,6 +86,7 @@ app.delete('/tasks/:id', (req, res) => {
   res.status(200).json({ message: `Task with id=${taskId} deleted` });
 });
 
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

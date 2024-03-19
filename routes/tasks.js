@@ -6,10 +6,10 @@ const authorize = require('../middleware/authorize')
 const tasks = require('./seedData.json');
 
 
-//encrypt each instruction
-
+// array to store tasks
 let id = tasks.length + 1;
 
+// Create a task (sign up) 
 route.post('/', authorize, (req, res) => {
   const { nameTask, instruction } = req.body;
 
@@ -27,6 +27,7 @@ route.post('/', authorize, (req, res) => {
   res.status(201).json(task);
 });
 
+// Get all tasks 
 route.get('/',authorize,  (req, res) => {
   const { nameTask } = req.query;
 
@@ -44,6 +45,8 @@ route.get('/',authorize,  (req, res) => {
   res.json(decodedTasks);
 });
 
+// Get a task by id
+
 route.get('/:id', authorize, (req, res) => {
   const taskId = parseInt(req.params.id);
   let task = tasks.find(task => task.id === taskId);
@@ -56,6 +59,8 @@ route.get('/:id', authorize, (req, res) => {
 
   res.json(task);
 });
+
+// Update a task
 
 route.put('/:id', authorize,  (req, res) => {
   const taskId = parseInt(req.params.id);
@@ -70,6 +75,8 @@ route.put('/:id', authorize,  (req, res) => {
 
   res.status(200).json({ message: `Task with id=${taskId} updated`, task: tasks[taskIndex] });
 });
+
+// Delete a task
 
 route.delete('/:id', (req, res) => {
   const taskId = parseInt(req.params.id);

@@ -7,11 +7,9 @@ const authorize = require('../middleware/authorize')
 // array to store users
 const users = []
 
-/**
- * Create a user (sign up)
- */
+// Sign up a user
 route.post('/', basicAuth, async (req, res) => {
-  // get the user data, thanks to basicAuth middleware!
+  // get the user data, with basicAuth middleware
   const { email, password } = req.user
   const id = users.length + 1
 
@@ -32,30 +30,30 @@ route.post('/', basicAuth, async (req, res) => {
   res.status(201).json({ id, email })
 })
 
-/**
- * Sign in a user
- */
+// Log in a user and return a JWT
 route.post('/login', basicAuth, async (req, res) => {
-  // get the user from the database
+
+
+// get the user data, with basicAuth middleware
   const user = users.find(user => user.email === req.user.email)
 
-  // make sure the user exists
+// check if the user exists
   if (!user) {
     return res.status(404).send({ error: 'User not found.' })
   }
 
-  // compare the provided password with the hashed password from the db
+// compare the hashed password with the user input
   const result = await bcrypt.compare(req.user.password, user.password)
 
   if (!result) {
     return res.status(401).json({ error: 'Incorrect password' })
   }
 
-  // make a payload
+// create the payload
   const payload = { id: user.id, email: user.email }
 
-  // sign and encode the payload to create the token
-  const accessToken = jwt.sign(payload, process.env['TOKEN_SECRET'])  //authentication example!
+// create the JWT and send it back to the client (authentication )
+  const accessToken = jwt.sign(payload, process.env['TOKEN_SECRET'])  
   console.log("JWT:", accessToken)
   console.log(process.env['TOKEN_SECRET'])
 
@@ -63,15 +61,8 @@ route.post('/login', basicAuth, async (req, res) => {
   res.json({ accessToken })
 })
 
-/**
- * Get the user specified by the Authorization header
- */
+// Get the user's data (profile)
 route.get('/', authorize, async (req, res) => {
-  /**
-   * Note that this endpoint no longer needs to repeat all the authentication logic!
-   * The The authorize middleware verifies and parses the token, then attaches the
-   * payload to req.user for return.
-   */
   res.json(req.user)
 })
 

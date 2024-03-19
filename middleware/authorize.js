@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-/**
- * Parse and verify the token. If authentic, attach the payload to req.user
- * and pass to the next middleware.
- */
+// This middleware is used to verify the token and attach the payload to req.user
 async function authorize(req, res, next) {
   const authHeader = req.headers.authorization
 

@@ -1,7 +1,4 @@
-/**
- * This middleware parses the email and password from the Authorization
- * header in the request, and attaches them to req.user
- */
+// This middleware is used to authenticate the user using basic auth
 function basicAuth(req, res, next) {
   const authHeader = req.headers.authorization
 
